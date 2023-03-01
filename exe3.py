@@ -1,13 +1,23 @@
 def bubblesort(lista):
     for i in range(len(lista)):
-        for a in range(0, len(lista)-i-1):
+        for a in range(0, len(lista) - i - 1):
             if lista[a] > lista[a + 1]:
                 b = lista[a + 1]
                 lista[a + 1] = lista[a]
                 lista[a] = b
 
-if __name__ == '__main__':
-    lista = [1, 3, 2, 3, 4, 6, 8, 4, 2, 45, 6]
 
-    bubblesort(lista)
-    print(lista)
+def optimizedBsort(lista):
+    for i in range(len(lista)):
+        for a in range(0, len(lista) - i - 1):
+            if lista[a] > lista[a + 1]:
+                lista[a + 1], lista[a] = lista[a], lista[a + 1]
+
+
+if __name__ == '__main__':
+    lista1 = [1, 23, 42, 63, 4, 16, 8, 94, 72, 45, 6]
+    lista2 = [1, 23, 42, 63, 4, 16, 8, 94, 72, 45, 6]
+    bubblesort(lista1)
+    print(lista1)
+    optimizedBsort(lista2)
+    print(lista1)
