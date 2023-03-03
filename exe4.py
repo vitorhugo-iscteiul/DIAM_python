@@ -13,31 +13,33 @@
 # for composta apenas por “None”, então as strings podem ser transpostas. Conte o número de
 # passos necessários até obter a solução. Considere que um passo é uma iteração numa cadeia
 # de caracteres. Conte também o tempo necessário até obter a solução.
-import collections
 
+import time
 
 def toNull(s1, s2):
+
+    start = time.time()
+
     s3 = list()
     counter = 0
-    for a in s2:
+    outcome = True
+    for a in s1:
         counter += 1
-        if a in s1:
+        if a in s2:
             s3.append(None)
         else:
             s3.append(a)
-    print(s3)
-    print(counter)
-    __validateResult__(s3)
 
+    for index in s3:
+        counter += 1
+        if index is not None:
+            outcome = False
+            break
 
-def __validateResult__(list):
-    for index in list:
-        print(list.index(index))
-        if index != None:
-            print("False")
-            return False;
-    print("True")
-    return True;
+    end = time.time()
+    duration = end-start
+
+    return f'As strings {s1} e {s2} podem ser transpostas? {outcome}. Foram necessários {counter} passos e demorou {duration} segundos.'
 
 
 # 2) Ordene os caracteres das duas strings. Se o resultado
@@ -46,20 +48,30 @@ def __validateResult__(list):
 # necessários e o tempo até obter a solução
 
 def __orderString__(s1, s2):
-    print("s1:" + s1)
-    print("s2:" + s2)
+
+    start = time.time()
     s3 = list()
     counter = 0
+
     for a in s2:
         counter += 1
         if a in s1:
             s3.append(a)
         else:
             s3.append("")
-    s1 = "".join(s3)
-    print("s1:" + s1)
-    print("s2:" + s2)
-    print(counter)
+
+    s4 = "".join(s3)
+
+    for index in s4:
+        counter += 1
+        if index is not None:
+            outcome = False
+            break
+
+    end = time.time()
+    duration = end-start
+
+    return f'As strings {s1} e {s2} podem ser transpostas? {outcome}. Foram necessários {counter} passos e demorou {duration} segundos.'
 
 
 # 3) Programe a variante “força bruta”, isto é, que testa todas as possibilidades. Para isso considere
@@ -68,10 +80,11 @@ def __orderString__(s1, s2):
 # o número de passos necessários e o tempo até obter a solução.
 
 
-def __permutations__(s1,s2):
+def __permutations__(s1, s2):
     final_list = [[]]
     length = len(s1)
     groups = [list(s1)] * length
+    print(groups)
 
     for j in groups:
         final_list = [x + [y] for x in final_list for y in j]
@@ -85,14 +98,44 @@ def __permutations__(s1,s2):
 # de cada caractere em cada string for igual, então as duas strings são transponíveis. Conte o
 # número de passos necessários e o tempo até obter a solução.
 
+def __lettersCount__(s1):
+    strs = ''
+    for letr in s1:
+        if letr not in strs:
+            strs = strs + letr
+    return strs
+
+def __stringCounter__(s1,s2):
+
+    import exe2 as letcnt
+
+    strs1 = __lettersCount__(s1)
+    strs2 = __lettersCount__(s2)
+
+    cnt1 = letcnt.countLetters(strs1, s1)
+    cnt2 = letcnt.countLetters(strs2, s2)
+
+    print(cnt1)
+    print(cnt2)
+
+    for k in cnt1:
+        if k not in cnt2 or cnt1[k] != cnt2[k]:
+            return False;
+
+    return True;
 
 # 5) Qual destas variantes executa menos passos até à solução? E qual é a mais rápida?
 
 
+
 if __name__ == '__main__':
-    # toNull("romar", "amror")
-    # __orderString__("promar", "ramorp")
-     print(__permutations__("promar", "ramorp"))
+
+    print('1) ' + toNull("amror", "ramon"))
+    #print('2) ' + __orderString__("promar", "ramorp"))
+    #print('3) ' + __permutations__("promar", "ramorp"))
+    #print('4) ' + __stringCounter__("romat","amror"))
+
+
 
 
 
