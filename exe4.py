@@ -16,62 +16,63 @@
 
 import time
 
-def toNull(s1, s2):
+def __toNull__(s1, s2):
 
     start = time.time()
 
-    s3 = list()
+    s4 = list(s2)
     counter = 0
     outcome = True
-    for a in s1:
-        counter += 1
-        if a in s2:
-            s3.append(None)
-        else:
-            s3.append(a)
 
-    for index in s3:
+    for i in s1:
         counter += 1
-        if index is not None:
+        if i in s4:
+            s4[s4.index(i)] = None
+        else:
             outcome = False
-            break
+
+    print(s4)
 
     end = time.time()
     duration = end-start
 
-    return f'As strings {s1} e {s2} podem ser transpostas? {outcome}. Foram necessários {counter} passos e demorou {duration} segundos.'
+    print(f'As strings {s1} e {s2} podem ser transpostas? {outcome}. Foram necessários {counter} passos e demorou {duration} segundos.')
 
+    return [counter, duration]
 
 # 2) Ordene os caracteres das duas strings. Se o resultado
 # da ordenação forem duas strings iguais, então as
 # strings são transponíveis. Conte o número de passos
 # necessários e o tempo até obter a solução
 
+import exe3
+
 def __orderString__(s1, s2):
 
     start = time.time()
-    s3 = list()
     counter = 0
 
-    for a in s2:
-        counter += 1
-        if a in s1:
-            s3.append(a)
-        else:
-            s3.append("")
+    s3 = list(s1)
+    s4 = list(s2)
+    #s3 = ''.join(sorted(s1))
+    #s4 = ''.join(sorted(s2))
 
-    s4 = "".join(s3)
+    exe3.optimizedBsort(s3)
+    exe3.optimizedBsort(s4)
 
-    for index in s4:
-        counter += 1
-        if index is not None:
-            outcome = False
-            break
-
+    print(s3)
+    print(s4)
     end = time.time()
     duration = end-start
 
-    return f'As strings {s1} e {s2} podem ser transpostas? {outcome}. Foram necessários {counter} passos e demorou {duration} segundos.'
+    outcome = True
+    for n in s3:
+        if n not in s4 or n != s4[s4.index(n)]:
+            outcome = False
+
+    print(f'As strings {s1} e {s2} podem ser transpostas? {outcome}. Foram necessários {counter} passos e demorou {duration} segundos.')
+
+    return [counter, duration]
 
 
 # 3) Programe a variante “força bruta”, isto é, que testa todas as possibilidades. Para isso considere
@@ -79,19 +80,40 @@ def __orderString__(s1, s2):
 # possíveis com essas letras. Finalmente, verifique se a segunda string se encontra na lista. Conte
 # o número de passos necessários e o tempo até obter a solução.
 
+final_list = []
 
-def __permutations__(s1, s2):
-    final_list = [[]]
-    length = len(s1)
-    groups = [list(s1)] * length
-    print(groups)
+def __allPermutations__(s1, s2):
+    start = time.time()
 
-    for j in groups:
-        final_list = [x + [y] for x in final_list for y in j]
+    counter = 0
+    outcome = False
+    n = len(s1)
 
-    permutations = [''.join(item) for item in final_list]
+    __permutations__(s1, "", n)
+    print(final_list)
 
-    return permutations.__contains__(s2)
+    for item in final_list:
+        counter += 1
+        if "".join(item) == s2:
+            outcome = True
+            break
+
+    end = time.time()
+    duration = end - start
+
+    print(f'As strings {s1} e {s2} podem ser transpostas? {outcome}. Foram necessários {counter} passos e demorou {duration} segundos.')
+    return [counter, duration]
+
+def __permutations__(s1, prefix, n):
+
+    if n == 0:
+        if [prefix] not in final_list:
+            final_list.append([prefix])
+        return
+
+    for i in range(n):
+        new_prefix = prefix + s1[i]
+        __permutations__(s1, new_prefix, n - 1)
 
 # 4) Considere as duas strings. Conte o número de cada caractere que existe em cada string. Por
 # exemplo, o número de “a” em cada string, o número de “b” em cada string, etc. Se o número
@@ -109,31 +131,71 @@ def __stringCounter__(s1,s2):
 
     import exe2 as letcnt
 
+    start = time.time()
+
+    counter = 0
+    outcome = True
+
     strs1 = __lettersCount__(s1)
+    counter += len(s1)
     strs2 = __lettersCount__(s2)
+    counter += len(s2)
 
     cnt1 = letcnt.countLetters(strs1, s1)
+    counter += len(s1)
     cnt2 = letcnt.countLetters(strs2, s2)
+    counter += len(s2)
 
     print(cnt1)
     print(cnt2)
 
     for k in cnt1:
+        counter += 1
         if k not in cnt2 or cnt1[k] != cnt2[k]:
-            return False;
+            outcome = False;
 
-    return True;
+    end = time.time()
+    duration = end - start
+
+    print(f'As strings {s1} e {s2} podem ser transpostas? {outcome}. Foram necessários {counter} passos e demorou {duration} segundos.')
+    return [counter, duration]
 
 # 5) Qual destas variantes executa menos passos até à solução? E qual é a mais rápida?
 
-
-
 if __name__ == '__main__':
 
-    print('1) ' + toNull("amror", "ramon"))
-    #print('2) ' + __orderString__("promar", "ramorp"))
-    #print('3) ' + __permutations__("promar", "ramorp"))
-    #print('4) ' + __stringCounter__("romat","amror"))
+    print('1) ')
+    exer4_1 = __toNull__("amoter", "ramote")
+
+    print('2) ')
+    exer4_2 = __orderString__("mala", "alma")
+
+    print('3) ')
+    exer4_3 = __allPermutations__("alme", "mala")
+
+    print('4) ')
+    exer4_4 = __stringCounter__("romat", "amror")
+
+    passos = [exer4_1[0], exer4_2[0], exer4_3[0], exer4_4[0]]
+    tempos = [exer4_1[1], exer4_2[1], exer4_3[1], exer4_4[1]]
+    print(passos)
+    print(tempos)
+
+    winner_passos = [1, exer4_1[0]]
+    winner_time = [1, exer4_1[1]]
+
+    print(winner_passos)
+    print(winner_time)
+
+    for pas in range(0, 3):
+        if passos[pas] < winner_passos[1]:
+            winner_passos[0] = pas
+
+    for tem in range(0, 3):
+        if tempos[tem] < winner_time[1]:
+            winner_time[1] = tem
+
+    print(f' o vencedor em passos é o algoritmo {winner_passos[0]} e em tempo é o {winner_time[0]}')
 
 
 

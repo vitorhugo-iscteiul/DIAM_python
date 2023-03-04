@@ -1,8 +1,3 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
 file = open('poema.txt', 'r', encoding='utf-8')
 
 estrofe = ["Por isso eu fiz um samba bem pra frente","Dizendo realmente o que é que eu acho","Isso me deixa triste e cabisbaixo"]
@@ -26,6 +21,8 @@ if __name__ == '__main__':
 
     # 3.1 c)
     poemafinal = poem + estrofe
+
+    print("\n")
 
     # 3.1 d)
     print(poemafinal[-2:])
